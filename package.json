@@ -1,0 +1,7 @@
+{
+  "name": "pure-runtime",
+  "version": "0.1.0",
+  "main": "index.js",
+  "author": "Jesse Gibson <JesseTheGibson@gmail.com>",
+  "license": "MIT"
+}
