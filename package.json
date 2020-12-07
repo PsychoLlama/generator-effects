@@ -1,7 +1,10 @@
 {
-  "name": "pure-runtime",
+  "name": "effect-runtime",
   "version": "0.1.0",
-  "main": "index.js",
+  "description": "A generator runtime for effect isolation",
+  "main": "src/index.js",
+  "repository": "https://github.com/PsychoLlama/effect-runtime.git",
   "author": "Jesse Gibson <JesseTheGibson@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "private": true
 }
