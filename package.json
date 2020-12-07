@@ -15,11 +15,6 @@
     "singleQuote": true,
     "trailingComma": "es5"
   },
-  "babel": {
-    "presets": [
-      "@babel/preset-env"
-    ]
-  },
   "eslintConfig": {
     "parser": "babel-eslint",
     "extends": [
