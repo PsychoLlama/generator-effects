@@ -1,6 +1,6 @@
-const { Marker, resolve } = require("./effects");
+const { Marker, resolve } = require('./effects');
 
-const fire = action => {
+const fire = (action) => {
   const thunk = resolve(action);
   return thunk();
 };

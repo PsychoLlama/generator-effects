@@ -1,9 +1,9 @@
-const runtime = require("./runtime");
+const runtime = require('./runtime');
 
 const Marker = {
-  Timeout: "timeout",
-  ClearTimeout: "clear-timeout",
-  Log: "log"
+  Timeout: 'timeout',
+  ClearTimeout: 'clear-timeout',
+  Log: 'log',
 };
 
 const thunks = new WeakMap();
@@ -11,7 +11,7 @@ const timeouts = new WeakMap();
 
 function resolve(marker) {
   if (!thunks.has(marker)) {
-    throw new Error("Invalid marker");
+    throw new Error('Invalid marker');
   }
 
   return thunks.get(marker);
@@ -45,7 +45,7 @@ const effects = {
       return handle;
     }),
 
-  clearTimeout: handle =>
+  clearTimeout: (handle) =>
     defer(Marker.ClearTimeout, () => {
       if (timeouts.has(handle)) {
         const id = timeouts.get(handle);
@@ -56,11 +56,11 @@ const effects = {
   log: (...args) =>
     defer(Marker.Log, () => {
       console.log(...args);
-    })
+    }),
 };
 
 Object.assign(exports, {
   Marker,
   resolve,
-  effects
+  effects,
 });
