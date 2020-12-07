@@ -1,0 +1,11 @@
+{
+  "name": "effect-runtime-examples",
+  "version": "0.1.0",
+  "repository": "https://github.com/github:PsychoLlama/effect-runtime",
+  "author": "Jesse Gibson <JesseTheGibson@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "effect-runtime": "link:../"
+  }
+}
