@@ -1,29 +1,19 @@
-import { execute, effects } from 'effect-runtime';
-
-function* otherEffect() {
-  yield effects.log('Running side channel');
-
-  yield effects.timeout(2000, function* () {
-    yield effects.log('nice');
-  });
-}
+import execute, { timer, log } from 'effect-runtime';
 
 execute(function* () {
-  const handle = yield effects.timeout(1000, function* () {
-    yield effects.log('timeout 1...');
+  yield log.print('Running timeout...');
+  yield timer.sleep(1000);
+  yield log.print('Timeout done.');
 
-    yield* otherEffect();
+  const result = yield* subroutine();
 
-    const handle = yield effects.timeout(500, function* () {
-      yield effects.log('timeout 2...');
-    });
-
-    yield effects.clearTimeout(handle);
-
-    yield effects.timeout(1000, function* () {
-      yield effects.log('timeout 3');
-    });
-  });
-
-  yield effects.log('Got handle:', handle);
+  yield log.print('Subroutine exited:', result);
 });
+
+function* subroutine() {
+  yield log.print('Starting timer from subroutine...');
+  yield timer.sleep(2000);
+  yield log.print('Timer done.');
+
+  return 'value from subroutine';
+}
