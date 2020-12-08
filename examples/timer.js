@@ -5,7 +5,12 @@ execute(function* () {
   yield timer.sleep(1000);
   yield log.print('Timeout done.');
 
-  const result = yield* subroutine();
+  const reporter = {
+    log: (...args) => console.log('subroutine:', ...args),
+    error: (...args) => console.error('subroutine:', ...args),
+  };
+
+  const result = yield log.provider.override(reporter, subroutine);
 
   yield log.print('Subroutine exited:', result);
 });
