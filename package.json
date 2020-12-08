@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "test:unit": "jest --color",
     "test:lint": "eslint src --color",
     "test:fmt": "prettier --check --color src"
   },
@@ -23,7 +24,8 @@
     ],
     "env": {
       "es6": true,
-      "node": true
+      "node": true,
+      "jest": true
     },
     "rules": {
       "no-constant-condition": "off"
@@ -40,6 +42,7 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^7.15.0",
     "eslint-config-prettier": "^7.0.0",
+    "jest": "^26.6.3",
     "prettier": "^2.2.1"
   }
 }
