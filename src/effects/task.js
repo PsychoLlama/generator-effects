@@ -1,32 +1,38 @@
-import { define, run } from '../dispatcher';
+import { defer, run } from '../dispatcher';
 import Future from '../future';
 
-export const join = define((getContext, tasks) => {
-  return Future((future) => {
-    if (tasks.length === 0) return future.resolve([]);
+export function join(tasks) {
+  return defer((scope) => {
+    return Future((future) => {
+      if (tasks.length === 0) return future.resolve([]);
 
-    const results = Array(tasks.length);
-    let settled = 0;
+      const results = Array(tasks.length);
+      let settled = 0;
 
-    tasks.forEach((task, index) => {
-      run(task).map(
-        (result) => {
-          results[index] = result;
+      tasks.forEach((task, index) => {
+        run(task, scope).map(
+          (result) => {
+            results[index] = result;
 
-          if (++settled === tasks.length) {
-            future.resolve(results);
+            if (++settled === tasks.length) {
+              future.resolve(results);
+            }
+          },
+          (error) => {
+            future.reject(error);
           }
-        },
-        (error) => {
-          future.reject(error);
-        }
+        );
+      });
+    });
+  });
+}
+
+export function race(tasks) {
+  return defer((scope) => {
+    return Future((future) => {
+      tasks.forEach((task) =>
+        run(task, scope).map(future.resolve, future.reject)
       );
     });
   });
-});
-
-export const race = define((getContext, tasks) => {
-  return Future((future) => {
-    tasks.forEach((task) => run(task).map(future.resolve, future.reject));
-  });
-});
+}

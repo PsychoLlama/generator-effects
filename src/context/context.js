@@ -1,4 +1,13 @@
-class Context {}
+import { defer } from '../dispatcher';
+import { consumeIntoFuture } from '../runtime';
+
+class Context {
+  override = (value, program) => {
+    return defer((scope) => {
+      return consumeIntoFuture(program(), scope.branch(this, value));
+    });
+  };
+}
 
 const defaultValues = new WeakMap();
 

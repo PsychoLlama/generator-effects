@@ -1,28 +1,33 @@
 import { run } from './dispatcher';
 import createScope from './context/scope';
+import Future from './future';
 
-export default function runtime(program) {
-  return new Promise((resolve, reject) => {
-    const effects = program();
-
-    function tick(result = effects.next(), scope = createScope()) {
-      if (result.done) return resolve(result.value);
+export function consumeIntoFuture(effects, scope) {
+  return Future((future) => {
+    function tick(scope, result = effects.next()) {
+      if (result.done) return future.resolve(result.value);
 
       // Assume every yielded value is an effect.
-      run(result.value, scope.lookup).map(
-        (product) => tick(effects.next(product), scope),
+      run(result.value, scope).map(
+        (product) => tick(scope, effects.next(product)),
         (error) => {
           try {
             // Give the generator a chance to catch the error.
-            tick(effects.throw(error), scope);
+            tick(scope, effects.throw(error));
           } catch (error) {
             // The program failed. Time to blow up.
-            reject(error);
+            future.reject(error);
           }
         }
       );
     }
 
-    tick();
+    tick(scope);
+  });
+}
+
+export default function runtime(program) {
+  return new Promise((resolve, reject) => {
+    consumeIntoFuture(program(), createScope()).map(resolve, reject);
   });
 }
