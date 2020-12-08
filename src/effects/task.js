@@ -1,7 +1,7 @@
 import { define, run } from '../dispatcher';
 import Future from '../future';
 
-export const join = define((tasks) => {
+export const join = define((getContext, tasks) => {
   return Future((future) => {
     if (tasks.length === 0) return future.resolve([]);
 
@@ -25,7 +25,7 @@ export const join = define((tasks) => {
   });
 });
 
-export const race = define((tasks) => {
+export const race = define((getContext, tasks) => {
   return Future((future) => {
     tasks.forEach((task) => run(task).map(future.resolve, future.reject));
   });

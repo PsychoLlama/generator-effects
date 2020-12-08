@@ -1,5 +1,6 @@
 import { defer, run, define } from '../dispatcher';
 import Future from '../future';
+import * as context from '../context';
 
 describe('Runner', () => {
   it('creates and executes IO handles', () => {
@@ -18,9 +19,20 @@ describe('Runner', () => {
 
   it('exposes a function for defining new effects', () => {
     const handler = jest.fn();
+    const ctx = context.create();
     const wrapper = define(() => Future.resolve('result'));
-    run(wrapper()).map(handler);
+    run(wrapper(), ctx.lookup).map(handler);
 
     expect(handler).toHaveBeenCalledWith('result');
+  });
+
+  it('passes the execution context', () => {
+    const effect = jest.fn(() => Future.resolve());
+    const ctx = context.create();
+    const handle = defer(effect);
+
+    run(handle, ctx.lookup);
+
+    expect(effect).toHaveBeenCalledWith(ctx.lookup);
   });
 });
