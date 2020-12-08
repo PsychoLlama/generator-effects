@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+yarn -s babel-node "$1"
