@@ -1,5 +1,6 @@
 import * as log from '../log';
 import { run } from '../../dispatcher';
+import createScope from '../../context/scope';
 
 describe('Log effects', () => {
   jest.spyOn(console, 'log').mockReturnValue();
@@ -7,7 +8,7 @@ describe('Log effects', () => {
 
   describe('.print', () => {
     it('prints to stdout', () => {
-      run(log.print('msg'));
+      run(log.print('msg'), createScope());
 
       expect(console.log).toHaveBeenCalledWith('msg');
     });
@@ -15,7 +16,7 @@ describe('Log effects', () => {
 
   describe('.print', () => {
     it('prints to stderr', () => {
-      run(log.error('oh noes'));
+      run(log.error('oh noes'), createScope());
 
       expect(console.error).toHaveBeenCalledWith('oh noes');
     });

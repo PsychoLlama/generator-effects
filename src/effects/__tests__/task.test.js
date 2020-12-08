@@ -2,6 +2,7 @@ import { run, defer } from '../../dispatcher';
 import Future from '../../future';
 import * as task from '../task';
 import runtime from '../../runtime';
+import createScope from '../../context/scope';
 
 describe('Task', () => {
   const success = (x) => defer(() => Future.resolve(x));
@@ -10,7 +11,7 @@ describe('Task', () => {
   describe('.join', () => {
     it('resolves immediately when the list is empty', () => {
       const handler = jest.fn();
-      run(task.join([])).map(handler);
+      run(task.join([]), createScope()).map(handler);
 
       expect(handler).toHaveBeenCalledWith([]);
     });

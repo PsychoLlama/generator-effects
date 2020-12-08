@@ -12,10 +12,10 @@ export function defer(thunk) {
 }
 
 export function define(thunk) {
-  return (...args) => defer((getContext) => thunk(getContext, ...args));
+  return (...args) => defer((scope) => thunk(scope.lookup, ...args));
 }
 
-export function run(handle, getContext) {
+export function run(handle, scope) {
   if (!thunks.has(handle)) {
     return Future((future) => {
       future.reject(new Error(`Yielded value was not an effect.`));
@@ -25,5 +25,5 @@ export function run(handle, getContext) {
   const thunk = thunks.get(handle);
 
   // Contract: effect thunks should always return a future.
-  return thunk(getContext);
+  return thunk(scope);
 }

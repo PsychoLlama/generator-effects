@@ -1,12 +1,13 @@
-import { defer, run, define } from '../dispatcher';
+import { run, define } from '../dispatcher';
 import Future from '../future';
-import * as context from '../context';
+import createScope from '../context/scope';
 
 describe('Runner', () => {
   it('creates and executes IO handles', () => {
     const done = jest.fn();
-    const handle = defer(() => Future.resolve('result'));
-    run(handle).map(done);
+    const wrapper = define(() => Future.resolve('result'));
+    const scope = createScope();
+    run(wrapper(), scope).map(done);
 
     expect(done).toHaveBeenCalledWith('result');
   });
@@ -19,20 +20,20 @@ describe('Runner', () => {
 
   it('exposes a function for defining new effects', () => {
     const handler = jest.fn();
-    const ctx = context.create();
+    const scope = createScope();
     const wrapper = define(() => Future.resolve('result'));
-    run(wrapper(), ctx.lookup).map(handler);
+    run(wrapper(), scope).map(handler);
 
     expect(handler).toHaveBeenCalledWith('result');
   });
 
-  it('passes the execution context', () => {
+  it('passes the context scope', () => {
     const effect = jest.fn(() => Future.resolve());
-    const ctx = context.create();
-    const handle = defer(effect);
+    const scope = createScope();
+    const wrapper = define(effect);
 
-    run(handle, ctx.lookup);
+    run(wrapper(), scope);
 
-    expect(effect).toHaveBeenCalledWith(ctx.lookup);
+    expect(effect).toHaveBeenCalledWith(scope.lookup);
   });
 });
