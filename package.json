@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
+    "test": "./run-tests",
     "test:unit": "jest --color",
     "test:lint": "eslint src --color",
     "test:fmt": "prettier --check --color src"
