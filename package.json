@@ -28,7 +28,8 @@
       "jest": true
     },
     "rules": {
-      "no-constant-condition": "off"
+      "no-constant-condition": "off",
+      "require-yield": "off"
     }
   },
   "browserslist": [

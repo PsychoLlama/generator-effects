@@ -1,19 +1,27 @@
-const { Marker, resolve } = require('./effects');
+import { run } from './runner';
 
-const fire = (action) => {
-  const thunk = resolve(action);
-  return thunk();
-};
+export default function runtime(program) {
+  return new Promise((resolve, reject) => {
+    const effects = program();
 
-function runtime(fn) {
-  const iter = fn();
-  let result;
+    function tick(result = effects.next()) {
+      if (result.done) return resolve(result.value);
 
-  while (true) {
-    const next = iter.next(result);
-    if (next.done) break;
-    result = fire(next.value);
-  }
+      // Assume every yielded value is an effect.
+      run(result.value).map(
+        (product) => tick(effects.next(product)),
+        (error) => {
+          try {
+            // Give the generator a chance to catch the error.
+            tick(effects.throw(error));
+          } catch (error) {
+            // The program failed. Time to blow up.
+            reject(error);
+          }
+        }
+      );
+    }
+
+    tick();
+  });
 }
-
-exports.execute = runtime;
