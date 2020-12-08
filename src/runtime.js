@@ -1,4 +1,4 @@
-import { run } from './runner';
+import { run } from './dispatcher';
 
 export default function runtime(program) {
   return new Promise((resolve, reject) => {

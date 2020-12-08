@@ -1,5 +1,5 @@
 import Future from '../future';
-import { defer } from '../runner';
+import { defer } from '../dispatcher';
 
 export function sleep(milliseconds) {
   return defer(() => {

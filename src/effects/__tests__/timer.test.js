@@ -1,5 +1,5 @@
 import * as timer from '../timer';
-import { run } from '../../runner';
+import { run } from '../../dispatcher';
 
 jest.useFakeTimers('modern');
 

@@ -1,5 +1,5 @@
 import runtime from '../runtime';
-import { defer } from '../runner';
+import { defer } from '../dispatcher';
 import Future from '../future';
 
 describe('Runtime', () => {

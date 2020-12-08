@@ -1,4 +1,4 @@
-import { defer, run } from '../runner';
+import { defer, run } from '../dispatcher';
 
 describe('Runner', () => {
   it('creates and executes IO handles', () => {

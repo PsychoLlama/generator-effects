@@ -1,5 +1,5 @@
 import * as log from '../log';
-import { run } from '../../runner';
+import { run } from '../../dispatcher';
 
 describe('Log effects', () => {
   jest.spyOn(console, 'log').mockReturnValue();
