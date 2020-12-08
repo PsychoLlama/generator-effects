@@ -56,4 +56,22 @@ describe('Future', () => {
 
     expect(handler).toHaveBeenCalledWith('x');
   });
+
+  describe('.resolve', () => {
+    it('returns a resolved future', () => {
+      const handler = jest.fn();
+      Future.resolve(50).map(handler);
+
+      expect(handler).toHaveBeenCalledWith(50);
+    });
+  });
+
+  describe('.reject', () => {
+    it('returns a rejected future', () => {
+      const handler = jest.fn();
+      Future.reject(20).map(null, handler);
+
+      expect(handler).toHaveBeenCalledWith(20);
+    });
+  });
 });

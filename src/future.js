@@ -44,6 +44,9 @@ export default function Future(executor) {
   };
 }
 
+Future.resolve = (x) => Future((future) => future.resolve(x));
+Future.reject = (x) => Future((future) => future.reject(x));
+
 function identity(x) {
   return x;
 }
