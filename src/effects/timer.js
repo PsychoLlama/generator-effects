@@ -1,10 +1,8 @@
 import Future from '../future';
-import { defer } from '../dispatcher';
+import { define } from '../dispatcher';
 
-export function sleep(milliseconds) {
-  return defer(() => {
-    return Future((future) => {
-      setTimeout(future.resolve, milliseconds);
-    });
+export const sleep = define((milliseconds) => {
+  return Future((future) => {
+    setTimeout(future.resolve, milliseconds);
   });
-}
+});

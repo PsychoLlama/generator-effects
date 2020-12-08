@@ -11,6 +11,10 @@ export function defer(thunk) {
   return handle;
 }
 
+export function define(thunk) {
+  return (...args) => defer(() => thunk(...args));
+}
+
 export function run(handle) {
   if (!thunks.has(handle)) {
     return Future((future) => {

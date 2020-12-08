@@ -1,16 +1,12 @@
 import Future from '../future';
-import { defer } from '../dispatcher';
+import { define } from '../dispatcher';
 
-export function print(...values) {
-  return defer(() => {
-    console.log(...values);
-    return Future.resolve();
-  });
-}
+export const print = define((...values) => {
+  console.log(...values);
+  return Future.resolve();
+});
 
-export function error(...values) {
-  return defer(() => {
-    console.error(...values);
-    return Future.resolve();
-  });
-}
+export const error = define((...values) => {
+  console.error(...values);
+  return Future.resolve();
+});
